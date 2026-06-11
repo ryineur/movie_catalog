@@ -12,69 +12,66 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Movie Catalog',
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFF5F6FA)),
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF5F6FA),
+      ),
       home: const MovieCatalogPage(),
     );
   }
 }
 
-// 1. MODEL DATA FILM (Ditambahkan deskripsi & status favorit)
+// 1. MODEL DATA FILM (Sudah non-const karena status isFavorite bisa diubah)
 class Movie {
   final String title;
   final String releaseDate;
   final double rating;
-  final String description; // Baris baru
-  bool isFavorite; // Baris baru untuk status favorit
+  final String description;
+  bool isFavorite;
 
   Movie({
     required this.title,
     required this.releaseDate,
     required this.rating,
     required this.description,
-    this.isFavorite = false, // Set awal tidak favorit
+    this.isFavorite = false,
   });
 }
 
-// 2. ARRAY DATA FILM (Menggunakan data lamamu + tambahan deskripsi cerita)
+// 2. ARRAY DATA FILM (Kata kunci 'const' di depan objek Movie sudah dihapus)
 final List<Movie> movieList = [
   Movie(
-    title: 'Inception',
-    releaseDate: '2010-07-15',
+    title: 'Inception', 
+    releaseDate: '2010-07-15', 
     rating: 8.4,
-    description:
-        'Seorang pencuri yang mencuri rahasia perusahaan melalui penggunaan teknologi berbagi mimpi, diberikan tugas sebaliknya: menanamkan ide ke dalam pikiran seorang CEO.',
+    description: 'Seorang pencuri yang mencuri rahasia perusahaan melalui penggunaan teknologi berbagi mimpi, diberikan tugas sebaliknya: menanamkan ide ke dalam pikiran seorang CEO.',
   ),
   Movie(
-    title: 'Interstellar',
-    releaseDate: '2014-11-07',
+    title: 'Interstellar', 
+    releaseDate: '2014-11-07', 
     rating: 8.6,
-    description:
-        'Sebuah tim penjelajah melakukan perjalanan melalui lubang cacing di luar akaasa dalam upaya untuk memastikan kelangsungan hidup umat manusia.',
+    description: 'Sebuah tim penjelajah melakukan perjalanan melalui lubang cacing di luar angkasa dalam upaya untuk memastikan kelangsungan hidup umat manusia.',
   ),
   Movie(
-    title: 'Tenet',
-    releaseDate: '2020-08-22',
+    title: 'Tenet', 
+    releaseDate: '2020-08-22', 
     rating: 7.3,
-    description:
-        'Berbekal hanya satu kata, Tenet, dan berjuang untuk kelangsungan hidup seluruh dunia, seorang Protagonis melakukan perjalanan melalui dunia senja spionase internasional.',
+    description: 'Berbekal hanya satu kata, Tenet, dan berjuang untuk kelangsungan hidup seluruh dunia, seorang Protagonis melakukan perjalanan melalui dunia senja spionase internasional.',
   ),
   Movie(
-    title: 'The Dark Knight Rises',
-    releaseDate: '2012-07-16',
+    title: 'The Dark Knight Rises', 
+    releaseDate: '2012-07-16', 
     rating: 7.8,
-    description:
-        'Delapan tahun setelah pemerintahan anarki Joker, Batman dipaksa keluar dari pengasingannya untuk menyelamatkan Gotham City dari ancaman Bane.',
+    description: 'Delapan tahun setelah pemerintahan anarki Joker, Batman dipaksa keluar dari pengasingannya untuk menyelamatkan Gotham City dari ancaman Bane.',
   ),
   Movie(
-    title: 'Avatar: The Way of Water',
-    releaseDate: '2022-12-14',
+    title: 'Avatar: The Way of Water', 
+    releaseDate: '2022-12-14', 
     rating: 7.6,
-    description:
-        'Jake Sully tinggal bersama keluarga barunya yang terbentuk di bulan Pandora. Setelah ancaman kembali, Jake harus bekerja sama dengan Neytiri untuk melindungi planet mereka.',
+    description: 'Jake Sully tinggal bersama keluarga barunya yang terbentuk di bulan Pandora. Setelah ancaman kembali, Jake harus bekerja sama dengan Neytiri untuk melindungi planet mereka.',
   ),
 ];
 
-// 3. WIDGET UI UTAMA (Diubah menjadi StatefulWidget agar ikon favorit bisa berubah warna)
+// 3. WIDGET UI UTAMA (StatefulWidget)
 class MovieCatalogPage extends StatefulWidget {
   const MovieCatalogPage({super.key});
 
@@ -89,11 +86,7 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
       appBar: AppBar(
         title: const Text(
           'Movie Catalog',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 22),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFFF5F6FA),
@@ -106,15 +99,15 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
           final movie = movieList[index];
 
           return GestureDetector(
-            // NAVIGASI: Diklik untuk pindah ke halaman detail
             onTap: () async {
+              // Navigasi ke halaman detail
               await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MovieDetailPage(movie: movie),
                 ),
               );
-              // Memicu refresh halaman utama ketika kembali dari halaman detail
+              // Memicu refresh halaman list ketika kembali dari halaman detail
               setState(() {});
             },
             child: Container(
@@ -142,14 +135,10 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
                       color: const Color(0xFFE0E0E0),
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: const Icon(
-                      Icons.movie_creation_outlined,
-                      color: Colors.white,
-                      size: 32,
-                    ),
+                    child: const Icon(Icons.movie_creation_outlined, color: Colors.white, size: 32),
                   ),
                   const SizedBox(width: 16),
-                  // Detail Info Film
+                  // Detail Info
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,43 +146,25 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
                         const SizedBox(height: 4),
                         Text(
                           movie.title,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1A1A1A),
-                          ),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
                         ),
                         const SizedBox(height: 6),
-                        Text(
-                          movie.releaseDate,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
-                          ),
-                        ),
+                        Text(movie.releaseDate, style: const TextStyle(fontSize: 13, color: Colors.grey)),
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 16,
-                            ),
+                            const Icon(Icons.star, color: Colors.amber, size: 16),
                             const SizedBox(width: 4),
                             Text(
                               movie.rating.toString(),
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF333333),
-                              ),
+                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  // TOMBOL FAVORIT (Halaman Utama)
+                  // Tombol Favorit di Halaman Utama
                   IconButton(
                     icon: Icon(
                       movie.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -201,8 +172,7 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
                     ),
                     onPressed: () {
                       setState(() {
-                        movie.isFavorite =
-                            !movie.isFavorite; // Mengubah status favorit
+                        movie.isFavorite = !movie.isFavorite;
                       });
                     },
                   ),
@@ -216,7 +186,7 @@ class _MovieCatalogPageState extends State<MovieCatalogPage> {
   }
 }
 
-// 4. HALAMAN DETAIL FILM BARU
+// 4. WIDGET HALAMAN DETAIL FILM
 class MovieDetailPage extends StatefulWidget {
   final Movie movie;
   const MovieDetailPage({super.key, required this.movie});
@@ -230,22 +200,16 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.movie.title,
-          style: const TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: Text(widget.movie.title, style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: const Color(0xFFF5F6FA),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context), // Kembali ke halaman utama
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          // TOMBOL FAVORIT (Halaman Detail)
+          // Tombol Favorit di Halaman Detail
           IconButton(
             icon: Icon(
               widget.movie.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -264,7 +228,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Poster Film Besar
             Center(
               child: Container(
                 width: 160,
@@ -273,63 +236,38 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   color: const Color(0xFFE0E0E0),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
-                  Icons.movie_creation_outlined,
-                  color: Colors.white,
-                  size: 64,
-                ),
+                child: const Icon(Icons.movie_creation_outlined, color: Colors.white, size: 64),
               ),
             ),
             const SizedBox(height: 24),
-            // Judul Film
             Text(
               widget.movie.title,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1A1A1A),
-              ),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
             ),
             const SizedBox(height: 8),
-            // Info Tanggal & Rating Row
             Row(
               children: [
-                Text(
-                  widget.movie.releaseDate,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
+                Text(widget.movie.releaseDate, style: const TextStyle(fontSize: 14, color: Colors.grey)),
                 const SizedBox(width: 16),
                 const Icon(Icons.star, color: Colors.amber, size: 18),
                 const SizedBox(width: 4),
                 Text(
                   widget.movie.rating.toString(),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             const SizedBox(height: 20),
             const Divider(),
             const SizedBox(height: 10),
-            // Sinopsis/Deskripsi Film
             const Text(
               'Synopsis',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1A1A1A),
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
             ),
             const SizedBox(height: 8),
             Text(
               widget.movie.description,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Color(0xFF4A4A4A),
-                height: 1.5,
-              ),
+              style: const TextStyle(fontSize: 15, color: Color(0xFF4A4A4A), height: 1.5),
             ),
           ],
         ),
